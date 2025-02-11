@@ -1,0 +1,26 @@
+{
+  "name": "json703",
+  "version": "0.0.1",
+  "description": "Json703 is a project which structurizes a .txt files into .json",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shio703/Json703.git"
+  },
+  "keywords": [
+    "703",
+    "Json",
+    "Json703",
+    "Notes"
+  ],
+  "author": "Shio703",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shio703/Json703/issues"
+  },
+  "homepage": "https://github.com/Shio703/Json703#readme"
+}
