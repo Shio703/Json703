@@ -1,7 +1,12 @@
 class dataSchema {
   constructor(date, time, status) {
     this.date = date;
-    this.times = time;
+    this.times = [
+      {
+        time,
+        status,
+      },
+    ];
   }
 }
 
