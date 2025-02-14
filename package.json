@@ -1,6 +1,6 @@
 {
   "name": "json703",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "Json703 is a project which structurizes a .txt files into .json",
   "main": "index.js",
   "type": "commonjs",

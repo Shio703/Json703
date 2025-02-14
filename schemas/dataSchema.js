@@ -1,25 +1,21 @@
-class dataSchema {
+class dataObject {
   constructor(date, time, status) {
     this.date = date;
-    this.times = [
-      {
-        time,
-        status,
-      },
-    ];
+    this.data = {
+      time,
+      status,
+    };
   }
 }
 
-module.exports = { dataSchema };
-
-[
-  {
-    date: "7/3/2023",
-    times: [
-      {
-        time: "",
-        status: "",
-      },
-    ],
-  },
-];
+module.exports = { dataObject };
+// an example of the dataObject in a respose array
+// [
+//   dataObject = {
+//     date: "22/07/2024",
+//     data: {
+//       time: "16:30",
+//       status: "active",
+//     },
+//   },
+// ];
