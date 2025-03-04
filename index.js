@@ -66,7 +66,7 @@ const fileReader = (fileName) => {
   });
   return Promise.resolve(fileContent);
 };
-const object = new dataObject()
+const object = new dataObject();
 
 const checker = (fileContent) => {
   const toArray = fileContent.split("\n");
@@ -76,17 +76,16 @@ const checker = (fileContent) => {
     if (line.includes("/")) {
       //then it's date.
       currentDate = line.trim();
-      object.date = line;
+      object.date = line.trim();
       // console.log("date: ", line);
     } else if (line.includes(":")) {
       //then it's time with status.
       object.data.time = array[index].substring(0, 7).trim();
       object.data.status = array[index].substring(8).trim();
       // console.log("time: ", line);
-    } else if (line.length === 0) {
+    } else if (line.length === 0 || 1) {
       //then it's space between days.
-      // console.log("space between days!")
-      
+      console.log("space between days!");
     } else {
       console.log("no instructions found!");
     }
