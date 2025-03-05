@@ -28,10 +28,10 @@ module.exports = { dataObject };
 //   currentDate = line.trim();
 // }else if( line.includes(":") ){
 //   //then it's time with status.
-  
+
 // }else if( line.includes(" ") ){
 //   //then it's space between days.
-  
+
 // }else{
 //   console.log("no instructions found!");
 // }

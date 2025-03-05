@@ -1,5 +1,6 @@
-const { readFileSync, readdir } = require("node:fs");
+const { readFileSync, readdir, createWriteStream } = require("node:fs");
 const { dataObject } = require("./schemas/dataSchema");
+const path = require("node:path");
 
 // readdir("./txt Files", { encoding: "utf-8" }, (err, files) => {
 //   if (err) {
@@ -61,18 +62,26 @@ const dirReader = () => {
 };
 
 const fileReader = (fileName) => {
-  const fileContent = readFileSync(`./txt Files/${fileName}`, {
-    encoding: "utf-8",
-  });
-  return Promise.resolve(fileContent);
+  try {
+    const fileContent = readFileSync(`./txt Files/${fileName}`, {
+      encoding: "utf-8",
+    });
+    return Promise.resolve(fileContent);
+  } catch (error) {
+    console.error("Reading the file: ", error);
+  }
 };
-const object = new dataObject();
+// this object && variables may be needed in other functions so they are on global scope.
+let currentDate = null;
+let dataArray = [];
 
 const checker = (fileContent) => {
   const toArray = fileContent.split("\n");
-  let currentDate = null;
 
   toArray.forEach((line, index, array) => {
+    
+    const object = new dataObject();
+
     if (line.includes("/")) {
       //then it's date.
       currentDate = line.trim();
@@ -85,14 +94,47 @@ const checker = (fileContent) => {
       // console.log("time: ", line);
     } else if (line.length === 0 || 1) {
       //then it's space between days.
-      console.log("space between days!");
+      // console.log("space between days!");
     } else {
       console.log("no instructions found!");
+      process.exit(1);
     }
+    // after each checking process i should do something with "object" to store it in current state.
+    if (object.date && object.data.status && object.data.time) {
+    }
+    dataArray.push(object);
   });
-  console.log(object);
+  // and then here we can call writer to write our array in a file.
+  console.log(dataArray);
+
+  return Promise.resolve();
+};
+
+const writer = () => {
+  try {
+    const jsonName = currentDate
+      .substring(currentDate.length - 0, 3)
+      .replace("/", "-");
+
+    const filePath = path.join(__dirname, "json Files", `${jsonName}.json`);
+
+    const writeStream = createWriteStream(filePath, {
+      encoding: "utf-8",
+    });
+
+    writeStream.write(JSON.stringify(dataArray));
+    writeStream.end();
+
+    writeStream.on("finish", () => console.log("writing finished!"));
+    writeStream.on("error", (error) =>
+      console.error("during the write operation: ", error)
+    );
+  } catch (err) {
+    console.error("in the writer during syncronous operations: ", err);
+  }
 };
 
 dirReader()
   .then((fileNames) => fileReader(fileNames))
-  .then((fileContent) => checker(fileContent));
+  .then((fileContent) => checker(fileContent))
+  .then(() => writer());
