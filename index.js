@@ -1,54 +1,9 @@
 const { readFileSync, readdir, createWriteStream } = require("node:fs");
 const { dataObject } = require("./schemas/dataSchema");
 const path = require("node:path");
+const { test } = require("node:test");
+const assert = require("node:assert");
 
-// readdir("./txt Files", { encoding: "utf-8" }, (err, files) => {
-//   if (err) {
-//     console.log(err);
-//     return;
-//   }
-//   for (fileIndex = 0; fileIndex < files.length; fileIndex++) {
-//     const fileContent = readFileSync(`./txt Files/${files[fileIndex]}`, {
-//       encoding: "utf-8",
-//     });
-//     // console.log(fileContent);
-
-//     // transforming into an array:
-//     const toArray = fileContent.split("\n");
-//     // console.log(toArray);
-
-//     // extracting dates:
-//     const dates = toArray.filter((value, index, array) => {
-//       //   console.log(array[index].trim());
-//       return value.includes("/");
-//     });
-
-//     // extracting times:
-//     const times = toArray.filter((value, index, array) => {
-//       return value.includes(":");
-//     });
-//     // and after this probably i'm gonna create another loop/map method which will loop "toArray" and clean each value from additional spaces
-//     times.map((value, index, array) => {
-//       const separatedTiems = array[index].substring(0, 7).trim();
-//       const separatedStatus = array[index].substring(8).trim();
-//       // console.log("time:", separatedTiems, "\n", "status:", separatedStatus);
-//       // console.log(value);
-//       const record = new dataObject(
-//         dates[fileIndex],
-//         separatedTiems,
-//         separatedStatus
-//       );
-//       console.log(record);
-//     });
-//   }
-// });
-
-// idea how to split time string which currently containes time and status:
-// due to every time and status part has a space betweeen we can check this space
-// at least two times and if it's just free space then we can do something conditionally
-// depended on this condition.
-
-// somewhere i should add if statement that will check dates and if date chages then it should create another folder in which it will save next date notes.
 const dirReader = () => {
   return new Promise((resolve, reject) => {
     readdir("./txt Files", { encoding: "utf8" }, (err, files) => {
@@ -79,7 +34,6 @@ const checker = (fileContent) => {
   const toArray = fileContent.split("\n");
 
   toArray.forEach((line, index, array) => {
-    
     const object = new dataObject(currentDate);
 
     if (line.includes("/")) {
@@ -94,19 +48,15 @@ const checker = (fileContent) => {
       // console.log("time: ", line);
     } else if (line.length === 0 || 1) {
       //then it's space between days.
-      // console.log("space between days!");
     } else {
       console.log("no instructions found!");
       process.exit(1);
     }
-    // after each checking process i should do something with "object" to store it in current state.
+    // if all property is not present then output will be just an empty array!!!
     if (object.date && object.data.status && object.data.time) {
       dataArray.push(object);
     }
   });
-  // and then here we can call writer to write our array in a file.
-  console.log(dataArray);
-
   return Promise.resolve();
 };
 
@@ -138,3 +88,21 @@ dirReader()
   .then((fileNames) => fileReader(fileNames))
   .then((fileContent) => checker(fileContent))
   .then(() => writer());
+
+// test cases: (which is not working yet)
+// const testFile = require("./files-for-testing/04-2023.json");
+
+// test("Output matches", async () => {
+//   await dirReader()
+//     .then((fileNames) => fileReader(fileNames))
+//     .then((fileContent) => checker(fileContent))
+//     .then(() => {
+//       const output = JSON.stringify(dataArray);
+//       console.log("output: ", output);
+//       console.log("test file: ", testFile);
+//       if (testFile !== output) {
+//         throw new Error("doesn't match!");
+//       }
+//     });
+//   // exec("cat ");
+// });

@@ -1,10 +1,11 @@
 {
   "name": "json703",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Json703 is a project which structurizes a .txt files into .json",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
