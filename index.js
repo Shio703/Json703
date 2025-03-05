@@ -80,7 +80,7 @@ const checker = (fileContent) => {
 
   toArray.forEach((line, index, array) => {
     
-    const object = new dataObject();
+    const object = new dataObject(currentDate);
 
     if (line.includes("/")) {
       //then it's date.
@@ -101,8 +101,8 @@ const checker = (fileContent) => {
     }
     // after each checking process i should do something with "object" to store it in current state.
     if (object.date && object.data.status && object.data.time) {
+      dataArray.push(object);
     }
-    dataArray.push(object);
   });
   // and then here we can call writer to write our array in a file.
   console.log(dataArray);
